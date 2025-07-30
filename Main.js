@@ -286,6 +286,7 @@ function markerMove(event){
 
 
 function drag(event){
+    document.getElementById("testres").innerHTML = "moving"
     if(mousedown == true && target != null && target.alt == "Marker"){
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left
         var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top
