@@ -30,6 +30,10 @@
                  <header><h1>An Introduction to Bezier Curves </h1></header>
              </div>
              <main>
+                <div class="Arrow_Container"> 
+                    <img src="Images/Transparent.png" alt="left">
+                    <img src="Images/Transparent.png" alt="right">
+                </div>
                 <section class="Section">
                     <article>
                         <h3>The Story of the Curve</h3>
@@ -65,23 +69,63 @@
                 <section class="Section">
                     <article>
                         <h3>So, how do we calculate bezier curves?</h3>
-                        <div class="left">
+                        <div class="middle">
                             <p>So, I'll just give you the formula first. The formula for calculating a bezier curve is! *Drum roll*(play drum roll sound) (1-t)*P0 + t(P1).
                                Its less complicated looking than it seems huh(Just to let you know, I'm using the wonderful literary device known as foreshadowing). Let's break down this formula.
-                               First off, what's P0 and P1? They refer to coordinates. These coordinates define where the line starts and ends. The "t" or T value refers to the percentage of the line.
-                               If say you want to get the coordinates of 50% along a line, you can use this. Oh I lied by the way. This isnt how you formulate bezier curves. This is only a part of it.
+                               First off, what's P0 and P1? They refer to coordinates. These coordinates define where our curve starts and ends. The "t" or T value refers to the percentage of the line.
+                               If say you want to get the coordinates of 50% along a line, you can use this formula to get the coordinate. Oh by the way, this formula won't yield a curve yet. All it does it give you a straight line.
                             </p>
                         </div>  
                         <p>This Is Interpolation</p>
                     </article>
                     <article>
                         <h3>What is Interpolation?</h3>
-                        So, what is interpolation? Officialy it is 
+                        <div class="left">
+                                <div id="calculator">
+                                    <div id = "Calc-Input">
+                                        <input type="number" placeholder="x1"   >
+                                        <input type="number" placeholder="y1">
+                                        <input type="number" placeholder="x2">
+                                        <input type="number" placeholder="y2">
+                                        <input type="number" placeholder="T-Value(0-1)">
+                                    </div>
+                                    <button id = "Calc-Enter">Calculate!</button>
+                                    <div id = "Calc-Results">Result</div>
+                                </div>
+                            <p>
+                                So, what is interpolation? Officially it is the process of determining unknown values between two points.
+                                 The fornmula does exactly that. Try out this calculator.
+                            </p>
+                            </div>
+                        <div class="middle">
+                            <p>
+                                Interpolation allows us to do quite a bit of things but its main purpose in this article is to calculate bezier curves.
+                                Interpolation is quite literally the foundation of bezier curves so it is important to understand it properly. I'll explain how interpolation is utilised in the next section:
+                            </p>
+                        </div>
+                        <p>The Types of bezier curves</p>
+
                     </article>
                 </section>   
                 <section class="Section">
                     <article>
-                        <h3>So, how do we calculate bezier curves?</h3>
+                        <h3>Linear Bezier Curves</h3>
+                        <div class = "left">
+                            <p>Here we are. The makings of an actual curve! Well, not really.
+                                 Remember that formula in the last section? That formula is for this type of curve. A line!
+                            </p>
+                            <img src="Images/Line.png" alt="">
+                        </div>
+                        <div class="middle">
+                            <p>Here, try this simulator out then, head on over to the next paragraph.</p>
+                        </div>
+
+                        <div class="game">
+                            <img id = "start" src="Images/Marker.png" alt="Marker" draggable="false">
+                            <img id = "start" src="Images/Marker.png" alt="Marker" draggable="false">
+                            <img id = "end" src="Images/Marker.png" alt="Marker" draggable="false">
+                        </div>
+
                     </article>
                 </section>   
                 <section class="Section">
@@ -90,10 +134,12 @@
                     </article>
                 </section>   
             </main>
-            
+                <div class="Arrow_Container"> 
+                    <img src="Images/Transparent.png" alt="left">
+                    <img src="Images/Transparent.png" alt="right">
+                </div>
             <footer>
-                    hello
-                        
+                    <img id="qr" src="Images/Hamburger Icon.png" alt="">    
             </footer>
             
         </body>
