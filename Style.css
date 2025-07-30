@@ -375,4 +375,7 @@ footer{
     height:62px;
     margin-left:50%;
     }
+    .game{
+        user-select: none 
+    }
 }
