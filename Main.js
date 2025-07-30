@@ -10,6 +10,7 @@
 //Global Variables
 var lineWidth = "1.9px"
 var lineColour = "#ff8d00"
+var LshadowColour = "#ff8d00"
 
 var rectColour = "transparent"
 
@@ -151,7 +152,7 @@ function createLineElement(x, y, length, angle) {
                + 'position: absolute; '
                + 'top: ' + y + 'px; '
                + 'left: ' + x + 'px; '
-               + 'box-shadow:0 0 15px'+ lineColour +';';
+               + 'box-shadow:0 0 15px '+ LshadowColour +';'
                + 'overflow:visible  '
     line.setAttribute('style', styles);  
     return line;
@@ -281,48 +282,137 @@ function markerMove(event){
     console.log('mouse up/down')
     // event.style.top
     target = event.target
-    document.getElementById("testres").innerHTML = mousedown
+}
+
+//innit 
+innitGame()
+function innitGame(){
+    //Make a div for storing lines
+    var gameElement = document.getElementsByClassName("game")
+
+   
+    //Needed Variables
+    let coords = {}
+    target = gameElement[0].children[0];
+    var GameElementChildren
+    var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left
+    var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top
+
+    //set positions for all the markers
+    for(var i = 0;i< gameElement.length;i++){
+        var Gameheight = gameElement[i].getBoundingClientRect().bottom - gameElement[i].getBoundingClientRect().top
+        var Gamewidth = gameElement[i].getBoundingClientRect().right - gameElement[i].getBoundingClientRect().left
+        for(var d = 0; d < gameElement[i].getElementsByTagName("img").length;d++){
+            if(d%2 == 0 ){
+                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2+"px"
+                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
+                console.log("even")
+            }
+            else{
+                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2.5+"px"
+                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
+    
+            }
+        }
+    }
+    //creating line containers
+    for(var i = 0; i < gameElement.length;i++){
+        var div = document.createElement("div")
+        div.className = "gameLineContainer"    
+        gameElement[i].appendChild(div)
+    }
+
+    //generate Line
+    lineWidth = width/6+"px";
+    lineColour = "red";
+    LshadowColour = "transparent"
+    
+    
+    // for(var i = 0;i < document.getElementsByClassName("gameLineContainer").length; i++){
+    //     document.getElementsByClassName("gameLineContainer")[i].replaceChildren()
+    // }
+
+    for(var i = 0; i < gameElement.length; i++){
+
+
+        GameElementChildren = gameElement[i].children
+        for(var d = 0;d < GameElementChildren.length; d++){
+            if(GameElementChildren[d].alt == "Marker"){
+                coords["Set"+d] = {}
+                GameElementChildren[d].style.zIndex = "1"
+                coords["Set"+d]["x"] = parseInt(GameElementChildren[d].style.left) + width/2 ;
+                coords["Set"+d]["y"] = parseInt(GameElementChildren[d].style.top) + height/2;
+            }
+        }
+
+        let t_ = 0;
+        console.log(i)
+        while(t_ < 1){
+            t_ += 0.05;
+            let Set1 = Generate_Bezier(t_-0.05,coords);
+            let Set2 = Generate_Bezier(t_,coords);
+            
+            document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y))
+        }
+    }
+    
+    lineColour = "#ff8d00"
+    LshadowColour = "#ff8d00"
+    lineWidth = "1.9px"
 }
 
 
+
+
+
+
+
+
 function drag(event){
-    document.getElementById("testres").innerHTML = event.touches[0].clientX
-    // console.log(event,"event")
-    // console.log(event.touches[0].clientX,"PageX")
+
     if(mousedown == true && target != null && target.alt == "Marker"){
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left
         var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top
+        
         if(window.innerWidth <= 800){ //if page width is less than 800px
-            console.log("mobile")
             target.style.left = event.touches[0].clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px"
             target.style.top = event.touches[0].clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px"    
 
         }
         else{
-            console.log("desktop")
             target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px"
             target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px"
         }
 
         let coords = {}
-        var gamecontainer =target.parentElement.children
+        var gamecontainer = target.parentElement.children
+
         for(var i = 0;i < gamecontainer.length; i++){
             if(gamecontainer[i].alt == "Marker"){
                 coords["Set"+i] = {}
                 gamecontainer[i].style.zIndex = "1"
-                coords["Set"+i]["x"] = parseInt(gamecontainer[i].style.left) + width/2 - 5;
-                coords["Set"+i]["y"] = parseInt(gamecontainer[i].style.top) + height/2 - 5;
+                coords["Set"+i]["x"] = parseInt(gamecontainer[i].style.left) + width/2;
+                coords["Set"+i]["y"] = parseInt(gamecontainer[i].style.top) + height/2;
             }
-            else{
-                target.parentElement.removeChild(gamecontainer[i])
-            }
-            
         }
-        lineWidth = "10px";
-        lineColour = "red";
-        target.parentElement.appendChild(createLine(coords.Set0.x,coords.Set0.y,coords.Set1.x,coords.Set1.y))
-    }
 
+        lineWidth = width/6+"px";
+        lineColour = "red";
+        LshadowColour = "transparent"
+
+
+        target.parentElement.lastChild.replaceChildren()
+            let t_ = 0;
+            while(t_ < 1){
+                t_ += 0.05;
+                let Set1 = Generate_Bezier(t_-0.05,coords);
+                let Set2 = Generate_Bezier(t_,coords);
+                target.parentElement.lastChild.appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y))
+            }
+    }
+        lineColour = "#ff8d00"
+        LshadowColour = "#ff8d00"
+        lineWidth = "1.9px"
 }
 
 function calculator(){
