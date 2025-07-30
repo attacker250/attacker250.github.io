@@ -266,6 +266,7 @@ for(var i = 0; i < document.getElementsByClassName("game").length;i++){
     document.getElementsByClassName("game")[i].addEventListener("mousedown", markerMove)
     document.getElementsByClassName("game")[i].addEventListener("mouseup", markerMove)
     document.getElementsByClassName("game")[i].addEventListener("mousemove", drag)
+
     document.getElementsByClassName("game")[i].addEventListener("touchstart", markerMove)
     document.getElementsByClassName("game")[i].addEventListener("touchend", markerMove)
     document.getElementsByClassName("game")[i].addEventListener("touchmove", drag)
@@ -280,7 +281,7 @@ function markerMove(event){
     console.log('mouse up/down')
     // event.style.top
     target = event.target
-
+    document.getElementById("testres").innerHTML = mousedown
 }
 
 
