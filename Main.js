@@ -286,7 +286,7 @@ function markerMove(event){
 
 
 function drag(event){
-    document.getElementById("testres").innerHTML = "moving"
+    document.getElementById("testres").innerHTML = event.touches[0].clientX
     // console.log(event,"event")
     // console.log(event.touches[0].clientX,"PageX")
     if(mousedown == true && target != null && target.alt == "Marker"){
