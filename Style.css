@@ -290,19 +290,25 @@ footer{
 /* Arrow button sprite styling  */
 .Arrow_Container{
     width: 100%;
+    user-select: none;
 }
 
 .Arrow_Container img:first-child{
     width:62px;
     height:62px;
-    margin-left:10%;
+    position: relative;
+    left:10%;
     background: url('Images/ArrowSprite.gif')0 0;
 }
 
 .Arrow_Container img:last-child{
     width:62px;
     height:62px;
-    margin-left:70%;
+    position: relative;
+    right:0%;
+    /* left: calc(80% + 35px); */
+    display:inline;
+    right:calc(-80% - 52px) ;
     background: url('Images/ArrowSprite.gif')-75px 0;
     
 }
@@ -316,14 +322,17 @@ footer{
     background: url('Images/ArrowSprite.gif')-215px 0;
 }
 
-/* Game! */
+/* Game! s*/
 .game{
-    width:100%;
+    width:50%;
     aspect-ratio: 1/1;
     border-top: 5px solid white;
+    border-right: 5px solid white;
+    border-left: 5px solid white;
     position: relative;
     overflow: hidden;
     touch-action: none;
+    margin: auto;
 }
 
 .game img{
@@ -334,7 +343,10 @@ footer{
     cursor: move;
     user-select: none;
     -webkit-user-drag: none;
-
+}
+.reset{
+    z-index:1;
+    position: relative;
 }
 
 @media screen and (max-width:800px) {
@@ -370,11 +382,12 @@ footer{
         margin:0px !important;
     }
 
-.Arrow_Container img:last-child{
-    width:62px;
-    height:62px;
-    margin-left:50%;
-    }
+    .Arrow_Container img:last-child{
+        width:62px;
+        height:62px;
+        left:60%;
+     }
+
     .game{
         user-select: none 
     }

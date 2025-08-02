@@ -11,6 +11,7 @@
 var lineWidth = "1.9px"
 var lineColour = "#ff8d00"
 var LshadowColour = "#ff8d00"
+var z_index = 0
 
 var rectColour = "transparent"
 
@@ -153,7 +154,8 @@ function createLineElement(x, y, length, angle) {
                + 'top: ' + y + 'px; '
                + 'left: ' + x + 'px; '
                + 'box-shadow:0 0 15px '+ LshadowColour +';'
-               + 'overflow:visible  '
+               + 'z-Index:'+ z_index +';'
+               + 'overflow:visible ;'
     line.setAttribute('style', styles);  
     return line;
 }
@@ -264,27 +266,63 @@ document.getElementsByClassName("Arrow_Container")[1].addEventListener("click", 
 document.getElementById("Calc-Enter").addEventListener("click", calculator)
 
 for(var i = 0; i < document.getElementsByClassName("game").length;i++){
-    document.getElementsByClassName("game")[i].addEventListener("mousedown", markerMove)
-    document.getElementsByClassName("game")[i].addEventListener("mouseup", markerMove)
+    document.getElementsByClassName("game")[i].addEventListener("mouseleave", mouseleaves)
+    document.getElementsByClassName("game")[i].addEventListener("mouseenter", mouseleaves)
+    document.getElementsByClassName("game")[i].addEventListener("touchcancel", mouseleaves)
+
+    document.getElementsByClassName("game")[i].addEventListener("mousedown", markerClick)
+    document.getElementsByClassName("game")[i].addEventListener("mouseup", markerClick)
     document.getElementsByClassName("game")[i].addEventListener("mousemove", drag)
 
-    document.getElementsByClassName("game")[i].addEventListener("touchstart", markerMove)
-    document.getElementsByClassName("game")[i].addEventListener("touchend", markerMove)
+    document.getElementsByClassName("game")[i].addEventListener("touchstart", markerClick)
+    document.getElementsByClassName("game")[i].addEventListener("touchend", markerClick)
     document.getElementsByClassName("game")[i].addEventListener("touchmove", drag)
 
 }
 //test
+
+
+
 var mousedown = false
 var target = null;
 
-function markerMove(event){
+//Fail safe for when mouse leaves the game area but let go outside
+function mouseleaves(event){
+    if(event.buttons == 0){
+        mousedown = false
+    }
+}
+
+function markerClick(event){
     mousedown = !mousedown
-    console.log('mouse up/down')
-    // event.style.top
-    target = event.target
+    if(event.target.tagName == "BUTTON"){
+        mousedown = false;
+        for(var i = 0;i < document.getElementsByClassName("gameLineContainer").length; i++){
+           document.getElementsByClassName("gameLineContainer")[i].replaceChildren()
+        }
+        innitGame()
+    }
+    else{
+        target = event.target
+        
+    }
 }
 
 //innit 
+
+
+var gameElement = document.getElementsByClassName("game")
+//creating line containers
+for(var i = 0; i < gameElement.length;i++){
+    var div = document.createElement("div")
+    div.className = "gameLineContainer"
+    var button = document.createElement("button")
+    button.innerHTML = "Reset"
+    button.className = "reset"
+    gameElement[i].insertBefore(button,gameElement[i].firstChild)
+    gameElement[i].appendChild(div)
+}
+
 innitGame()
 function innitGame(){
     //Make a div for storing lines
@@ -293,7 +331,7 @@ function innitGame(){
    
     //Needed Variables
     let coords = {}
-    target = gameElement[0].children[0];
+    target = gameElement[1].children[1];
     var GameElementChildren
     var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left
     var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top
@@ -306,7 +344,6 @@ function innitGame(){
             if(d%2 == 0 ){
                 gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2+"px"
                 gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
-                console.log("even")
             }
             else{
                 gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2.5+"px"
@@ -315,38 +352,28 @@ function innitGame(){
             }
         }
     }
-    //creating line containers
-    for(var i = 0; i < gameElement.length;i++){
-        var div = document.createElement("div")
-        div.className = "gameLineContainer"    
-        gameElement[i].appendChild(div)
-    }
 
     //generate Line
-    lineWidth = width/6+"px";
-    lineColour = "red";
-    LshadowColour = "transparent"
     
     
-    // for(var i = 0;i < document.getElementsByClassName("gameLineContainer").length; i++){
-    //     document.getElementsByClassName("gameLineContainer")[i].replaceChildren()
-    // }
 
+        
     for(var i = 0; i < gameElement.length; i++){
-
+        lineWidth = width/6+"px";
+        lineColour = "red";
+        LshadowColour = "transparent"
+        z_index = -1
 
         GameElementChildren = gameElement[i].children
         for(var d = 0;d < GameElementChildren.length; d++){
             if(GameElementChildren[d].alt == "Marker"){
                 coords["Set"+d] = {}
-                GameElementChildren[d].style.zIndex = "1"
                 coords["Set"+d]["x"] = parseInt(GameElementChildren[d].style.left) + width/2 ;
                 coords["Set"+d]["y"] = parseInt(GameElementChildren[d].style.top) + height/2;
             }
         }
 
         let t_ = 0;
-        console.log(i)
         while(t_ < 1){
             t_ += 0.05;
             let Set1 = Generate_Bezier(t_-0.05,coords);
@@ -355,7 +382,7 @@ function innitGame(){
             document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y))
         }
     }
-    
+    z_index = 0
     lineColour = "#ff8d00"
     LshadowColour = "#ff8d00"
     lineWidth = "1.9px"
@@ -387,21 +414,34 @@ function drag(event){
         let coords = {}
         var gamecontainer = target.parentElement.children
 
+        lineWidth = width/12+"px";
+        lineColour = "green";
+        LshadowColour = "transparent"
+        z_index = -2
+
         for(var i = 0;i < gamecontainer.length; i++){
             if(gamecontainer[i].alt == "Marker"){
                 coords["Set"+i] = {}
-                gamecontainer[i].style.zIndex = "1"
                 coords["Set"+i]["x"] = parseInt(gamecontainer[i].style.left) + width/2;
                 coords["Set"+i]["y"] = parseInt(gamecontainer[i].style.top) + height/2;
             }
         }
-
+        
+        console.log(coords)
+        target.parentElement.lastChild.replaceChildren()
+        for(var i = 0;i < gamecontainer.length;i++){
+            if(gamecontainer[i].alt == "Marker"){
+                // target.parentElement.lastChild.appendChild(createLine(Object.keys(coords)[i-1].x,Object.keys(coords)[i-1].y,Object.keys(coords)[i].x,Object.keys(coords)[i].y))
+                console.log(i,"   ",coords[Object.keys(coords)[i-1]])
+                console.log("set",coords[Object.keys(coords)[1]])
+            }
+        }
         lineWidth = width/6+"px";
         lineColour = "red";
         LshadowColour = "transparent"
+        z_index = -1
 
 
-        target.parentElement.lastChild.replaceChildren()
             let t_ = 0;
             while(t_ < 1){
                 t_ += 0.05;
@@ -410,9 +450,10 @@ function drag(event){
                 target.parentElement.lastChild.appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y))
             }
     }
-        lineColour = "#ff8d00"
-        LshadowColour = "#ff8d00"
-        lineWidth = "1.9px"
+    z_index = 0
+    lineColour = "#ff8d00"
+    LshadowColour = "#ff8d00"
+    lineWidth = "1.9px"
 }
 
 function calculator(){
@@ -441,6 +482,12 @@ function arrowContentManager(event){
     if(event.target.alt == "right"){
         for(var i = 0;i < sections.length;i++){
             if(sections[i].style.overflow != "hidden"){
+                if(sections[3].style.overflow != "hidden"){
+                    sections[i].style.height = "0"
+                    sections[i].style.overflow = "hidden"
+                    sections[i].style.opacity = "0"
+                    i = 0
+                }
                 document.getElementsByTagName("Header") [0].children[0].innerHTML = nav_items[i+1].innerHTML
                 sections[i+1].style.overflow = "visible"
                 sections[i+1].style.height = "auto"
@@ -451,10 +498,18 @@ function arrowContentManager(event){
                 break
             }
         }
+        document.documentElement.scrollTo(0,0)
+
     }
-    else{
+    else if(event.target.alt == "left"){
         for(var i = 0;i < sections.length;i++){
             if(sections[i].style.overflow != "hidden"){
+                if(sections[0].style.overflow != "hidden"){
+                    sections[i].style.height = "0"
+                    sections[i].style.overflow = "hidden"
+                    sections[i].style.opacity = "0"
+                    i = 4
+                }
                 document.getElementsByTagName("Header") [0].children[0].innerHTML = nav_items[i-1].innerHTML
                 sections[i-1].style.overflow = "visible"
                 sections[i-1].style.height = "auto"
@@ -465,8 +520,8 @@ function arrowContentManager(event){
                 break
             }
         }
+        document.documentElement.scrollTo(0,0)
     }
-    document.documentElement.scrollTo(0,0)
 
 }
 
@@ -588,7 +643,7 @@ function nav_Outline_anim(){
             t = t - 0.01; 
         }
         else{
-            //Animate Nav items hiding
+            //Animate Nav items hidings
             if(menu_shown == true){
                 for(var i = 0; i < nav_items.length; i++){
                     nav_items[i].animate(
