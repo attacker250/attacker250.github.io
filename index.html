@@ -11,7 +11,7 @@
                 <!-- Store line elements when web app starts  -->
                 <div id = "Fill_Container"></div>
                 <div id = "Line_Container"></div>
-                <button  id = "Hamburger"><img src="Images/Hamburger Icon.png" draggable="false"></button>
+                <button  id = "Hamburger"><img src="Images/Hamburger_Icon.png" alt = "Hamburger_bar" draggable="false"></button>
                 <!-- Store navigation buttons -->
                 <div id = "Item_container">
                     <div class = "nav_item">
@@ -42,7 +42,7 @@
                     <article>
                         <h3>The Story of the Curve</h3>
                         <div class = "right">    
-                            <img src="Images/Curves.png">   
+                            <img src="Images/Curves.png" alt="Image of Curves">   
                             <p>
                                 Curves. They exist in almost everything we see in reality and on the computer. Some curves are incredibly small, some are big.
                                 Some are uniform and some are varied. Take the curves on the right for example.
@@ -50,9 +50,9 @@
                         </div>  
                         <div class = "left">
                             <div class = "verticle_container">
-                                <img src="Images/Speed_Time_Graph.png">   
-                                <img src="Images/Height_graph.png">  
-                                <img src="Images/Kubler_Ross_Graph.webp">   
+                                <img src="Images/Speed_Time_Graph.png" alt ="Speed time graph">   
+                                <img src="Images/Height_graph.png" alt ="Height Graph">  
+                                <img src="Images/Kubler_Ross_Graph.webp" alt = "5 stages of grief graph">   
                             </div>
                             <p>
                                 Curves don't just exist in what we can see. They also exist in math. They can describe speed. They can describe height. They can even describe emotion. 
@@ -60,7 +60,7 @@
                             </p>
                         </div>
                         <div class = "right">
-                            <img src="Images/Weird_Curve.png">
+                            <img src="Images/Weird_Curve.png" alt = "Strange curve">
                             <p>But, how do we craft a unique kind of curve. One that loops or curves in the weirdest ways possible? Like this image?</p>
                         </div>
                             <p>Well, that's what we're here to find out today.</p>
@@ -71,7 +71,7 @@
                     <article>
                         <h3>So, how do we calculate bezier curves?</h3>
                         <div class="middle">
-                            <p>So, I'll just give you the formula first. The formula for calculating a bezier curve is! *Drum roll*(play drum roll sound) (1-t)*P0 + t(P1).
+                            <p>So, I'll just give you the formula first. The formula for calculating a bezier curve is! <span id="drums">*Drum roll*</span>(1-t)*P0 + t(P1).
                                Its less complicated looking than it seems huh(Just to let you know, I'm using the wonderful literary device known as foreshadowing). Let's break down this formula.
                                First off, what's P0 and P1? They refer to coordinates. These coordinates define where our curve starts and ends. The "t" or T value refers to the percentage of the line.
                                If say you want to get the coordinates of 50% along a line, you can use this formula to get the coordinate. Oh by the way, this formula won't yield a curve yet. All it does it give you a straight line.
@@ -116,7 +116,7 @@
                             <p>Here we are. The makings of an actual curve! Well, not really.
                                  Remember that formula in the last section? That formula is for this type of curve. A line!
                             </p>
-                            <img src="Images/Line.png" alt="">
+                            <img src="Images/Line.png" alt="line">
                         </div>
                         <div class="middle">
                             <p>Here, try this simulator out then, head on over to the next paragraph.</p>
@@ -134,7 +134,7 @@
                                 Here, we begin to actually get into making a curve. Ta da!. So, how is this curve even made? Essentially, this curve is the result of many interpolations.
                                  This gif over here will demonstrate. 
                             </p>
-                            <img src="Images/Bézier_Gen.gif" alt="">
+                            <img src="Images/Bézier_Gen.gif" alt="Bezier generation">
                         </div>
                         <div class = "right">
                             <p>
@@ -151,8 +151,17 @@
                     <article>
                         <h3>Cubic Bezier Curves</h3>
                         <div class = "left">
+                            <p>
+                                Cubic Bezier Curves are exactly like Quadratic bezier curves. Only with more interpolating and more complexity. This gif should help you visualise this.
+                                When we add more points onto a curve, we have to interpolate more and more. While we can reach an infinite number of points, it may not be the best solution to
+                                creating most shapes. 
+                            </p>
+                            <img src="Images/Cubic_bezier_gen.gif" alt="Cubic Gen">
+                        </div>
+                        <div class = "middle">
                             <p>As you may have noticed, the more points we add on a bezier curve, the more complex shapes we can make. Strictly speaking, it'd be much more efficient if
-                                we use multiple Quadratic or 
+                                we use multiple Quadratic or Cubic bezier curves to construct our shape but its if we need to be very specific with a particular line, 
+                                adding more points may be the way to go.
                             </p>
                         </div>
                         <div class="game">
@@ -163,9 +172,38 @@
                         </div>
                     </article>
                 </section>   
+                <!-- Page 4 The importance of it all -->
                 <section class="Section">
                     <article>
-                        <h3>So, how do we calculate bezier curves?</h3>
+                        <h3>The end of the curve</h3>
+                        <div class="middle">
+                            <p>
+                                Congrats! You've made it to the last page. I hope you've learned something fro- ... Whats that? Whats the point of learning all this?
+                                Well, allow me to show you!
+                            </p>
+                        </div>
+                    </article>
+                    <article>
+                        <h3>Bezier Curves in motion</h3>
+                        <div class="left">
+                            <p>
+                                So, we now know that Bezier curves can be used to display images and whatnot. But, what if I told you that it can control motion? Here take a look!
+                            </p>
+                            <img src="Images/Easing_Gif.gif" alt="Easing Gif">
+                        </div>
+                        <div class="right">
+                            <p>As you may have noticed, this is known as easing. Without easing, many websites, games,applications and animations would look incredibly static and boring
+                                It is because we have bezier curves that we are able to acheive this.
+                            </p>
+                        </div>
+                    </article>  
+                    <article>
+                        <h3>Bezier Curves in Games</h3>
+                        <div class="middle">
+                            <p>
+                                Video games have Bezier Curves too! They mainly control animations and visual effects but some developers use them in pathfinding.
+                            </p>
+                        </div>
                     </article>
                 </section>   
             </main>
@@ -174,7 +212,7 @@
                     <img src="Images/Transparent.png" alt="right" draggable="false">
                 </div>
             <footer>
-                    <img id="qr" src="Images/Hamburger Icon.png" alt="">    
+                    <img id="qr" src="Images/Hamburger_Icon.png" alt="">    
             </footer>
             
         </body>

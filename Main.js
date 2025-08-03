@@ -27,11 +27,13 @@ var Fill_Container = document.getElementById("Fill_Container")
 var sections = document.getElementsByClassName("Section")
 
 var t = 0 
-
+//menu variables
 var menu_shown = false
 var menu_offset
-
-
+//Game variables
+var gameElement = document.getElementsByClassName("game")
+var mousedown = false
+var target = null;
 // Initialisation
 set_coords()
 NavItemsUpdate()
@@ -125,11 +127,87 @@ function NavItemsUpdate(){
 
 
 
-// console.log(window.innerWidth)
 
 
-// console.log("Screen ",window.screen.availWidth)
-// console.log("\nPage height ",window.innerHeight)
+//creating line containers
+for(var i = 0; i < gameElement.length;i++){
+    var div = document.createElement("div")
+    div.className = "gameLineContainer"
+    var button = document.createElement("button")
+    button.innerHTML = "Reset"
+    button.className = "reset"
+    gameElement[i].insertBefore(button,gameElement[i].firstChild)
+    gameElement[i].appendChild(div)
+}
+
+innitGame()
+function innitGame(){
+    //Make a div for storing lines
+    //Needed Variables
+    let coords = {}
+    target = gameElement[1].children[1];
+    var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left
+    var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top
+    var GameElementChildren
+
+    //set positions for all the markers
+    for(var i = 0;i< gameElement.length;i++){
+        var Gameheight = gameElement[i].getBoundingClientRect().bottom - gameElement[i].getBoundingClientRect().top
+        var Gamewidth = gameElement[i].getBoundingClientRect().right - gameElement[i].getBoundingClientRect().left
+        for(var d = 0; d < gameElement[i].getElementsByTagName("img").length;d++){
+            if(d%2 == 0 ){
+                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2+"px"
+                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
+            }
+            else{
+                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2.5+"px"
+                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
+    
+            }
+        }
+    }
+
+    //generate Line 
+    for(var i = 0; i < gameElement.length; i++){
+        lineWidth = width/6+"px";
+        lineColour = "red";
+        LshadowColour = "transparent"
+        z_index = -1
+
+        GameElementChildren = gameElement[i].children
+        for(var d = 0;d < GameElementChildren.length; d++){
+            if(GameElementChildren[d].alt == "Marker"){
+                coords["Set"+d] = {}
+                coords["Set"+d]["x"] = parseInt(GameElementChildren[d].style.left) + width/2 ;
+                coords["Set"+d]["y"] = parseInt(GameElementChildren[d].style.top) + height/2;
+            }
+        }
+
+        lineWidth = width/12+"px";
+        lineColour = "green";
+        LshadowColour = "transparent"
+        z_index = -2
+        for(var d = 0;d < Object.keys(coords).length -1;d++){
+            document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(coords["Set"+(d+1)].x,coords["Set"+(d+1)].y,coords["Set"+(d+2)].x,coords["Set"+(d+2)].y))
+        }
+        lineWidth = width/6+"px";
+        lineColour = "red";
+        LshadowColour = "transparent"
+        z_index = -1
+        let t_ = 0;
+        while(t_ < 1){
+            t_ += 0.05;
+            let Set1 = Generate_Bezier(t_-0.05,coords);
+            let Set2 = Generate_Bezier(t_,coords);
+            
+            document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y))
+        }
+    }
+    z_index = 0
+    lineColour = "#ff8d00"
+    LshadowColour = "#ff8d00"
+    lineWidth = "1.9px"
+}
 
 
 
@@ -257,6 +335,7 @@ function Generate_Bezier(t,coord_set){
 
 //event listeners
 document.getElementById("Hamburger").addEventListener("click",nav_Outline_anim)
+document.getElementById("drums").addEventListener("click",function(){var drums = new Audio('Audio/drum-roll-sound-effect.mp3');drums.play()})
 document.getElementsByTagName("body")[0].onresize = function() {check()};
 for(var i = 0; i < nav_items.length;i++){
     nav_items[i].addEventListener("click",navContentManager)
@@ -283,9 +362,7 @@ for(var i = 0; i < document.getElementsByClassName("game").length;i++){
 
 
 
-var mousedown = false
-var target = null;
-
+//Bezier Curve Game
 //Fail safe for when mouse leaves the game area but let go outside
 function mouseleaves(event){
     if(event.buttons == 0){
@@ -307,108 +384,6 @@ function markerClick(event){
         
     }
 }
-
-//innit 
-
-
-var gameElement = document.getElementsByClassName("game")
-//creating line containers
-for(var i = 0; i < gameElement.length;i++){
-    var div = document.createElement("div")
-    div.className = "gameLineContainer"
-    var button = document.createElement("button")
-    button.innerHTML = "Reset"
-    button.className = "reset"
-    gameElement[i].insertBefore(button,gameElement[i].firstChild)
-    gameElement[i].appendChild(div)
-}
-
-innitGame()
-function innitGame(){
-    //Make a div for storing lines
-    var gameElement = document.getElementsByClassName("game")
-
-   
-    //Needed Variables
-    let coords = {}
-    target = gameElement[1].children[1];
-    var GameElementChildren
-    var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left
-    var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top
-
-    //set positions for all the markers
-    for(var i = 0;i< gameElement.length;i++){
-        var Gameheight = gameElement[i].getBoundingClientRect().bottom - gameElement[i].getBoundingClientRect().top
-        var Gamewidth = gameElement[i].getBoundingClientRect().right - gameElement[i].getBoundingClientRect().left
-        for(var d = 0; d < gameElement[i].getElementsByTagName("img").length;d++){
-            if(d%2 == 0 ){
-                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2+"px"
-                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
-            }
-            else{
-                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2.5+"px"
-                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px"
-    
-            }
-        }
-    }
-
-    //generate Line
-    
-
-
-        
-    for(var i = 0; i < gameElement.length; i++){
-        lineWidth = width/6+"px";
-        lineColour = "red";
-        LshadowColour = "transparent"
-        z_index = -1
-
-        GameElementChildren = gameElement[i].children
-        for(var d = 0;d < GameElementChildren.length; d++){
-            if(GameElementChildren[d].alt == "Marker"){
-                coords["Set"+d] = {}
-                coords["Set"+d]["x"] = parseInt(GameElementChildren[d].style.left) + width/2 ;
-                coords["Set"+d]["y"] = parseInt(GameElementChildren[d].style.top) + height/2;
-            }
-        }
-
-        lineWidth = width/12+"px";
-        lineColour = "green";
-        LshadowColour = "transparent"
-        z_index = -2
-        for(var d = 0;d < Object.keys(coords).length -1;d++){
-            document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(coords["Set"+(d+1)].x,coords["Set"+(d+1)].y,coords["Set"+(d+2)].x,coords["Set"+(d+2)].y))
-        }
-        lineWidth = width/6+"px";
-        lineColour = "red";
-        LshadowColour = "transparent"
-        z_index = -1
-
-
-
-        
-        let t_ = 0;
-        while(t_ < 1){
-            t_ += 0.05;
-            let Set1 = Generate_Bezier(t_-0.05,coords);
-            let Set2 = Generate_Bezier(t_,coords);
-            
-            document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y))
-        }
-    }
-    z_index = 0
-    lineColour = "#ff8d00"
-    LshadowColour = "#ff8d00"
-    lineWidth = "1.9px"
-}
-
-
-
-
-
-
-
 
 function drag(event){
 
@@ -467,6 +442,13 @@ function drag(event){
     lineWidth = "1.9px"
 }
 
+
+//test
+
+function Game_Bezier(coords,parent){
+
+}
+//calculator for page 2
 function calculator(){
     var x1 = document.getElementsByTagName("input")[0].value;
     var y1 = document.getElementsByTagName("input")[1].value;
@@ -497,15 +479,17 @@ function arrowContentManager(event){
                     sections[i].style.height = "0"
                     sections[i].style.overflow = "hidden"
                     sections[i].style.opacity = "0"
-                    i = 0
+                    i = -1  
+                }
+                else{
+                    sections[i].style.height = "0"
+                    sections[i].style.overflow = "hidden"
+                    sections[i].style.opacity = "0"
                 }
                 document.getElementsByTagName("Header") [0].children[0].innerHTML = nav_items[i+1].innerHTML
                 sections[i+1].style.overflow = "visible"
                 sections[i+1].style.height = "auto"
                 sections[i+1].style.opacity = "1"
-                sections[i].style.height = "0"
-                sections[i].style.overflow = "hidden"
-                sections[i].style.opacity = "0"
                 break
             }
         }
@@ -521,13 +505,15 @@ function arrowContentManager(event){
                     sections[i].style.opacity = "0"
                     i = 4
                 }
+                else{
+                    sections[i].style.height = "0"
+                    sections[i].style.overflow = "hidden"
+                    sections[i].style.opacity = "0"
+                }
                 document.getElementsByTagName("Header") [0].children[0].innerHTML = nav_items[i-1].innerHTML
                 sections[i-1].style.overflow = "visible"
                 sections[i-1].style.height = "auto"
                 sections[i-1].style.opacity = "1"
-                sections[i].style.height = "0"
-                sections[i].style.overflow = "hidden"
-                sections[i].style.opacity = "0"
                 break
             }
         }
@@ -557,14 +543,6 @@ function navContentManager(event){
     document.documentElement.scrollTo(0,0)
 }
 
-function test(){
-    console.log("Window Inner Width: ",window.innerWidth)
-    console.log("NavItems: ",nav_items[0].getBoundingClientRect().left)
-    console.log("\nDEBUG\n")
-    console.log("\nFill container child count: ", Fill_Container.childElementCount)
-    console.log("\nLine container child count: ", Line_Container.childElementCount)
-
-}
 
 //check when screen size is updated
 
@@ -646,8 +624,6 @@ function nav_Outline_anim(){
     id = setInterval(frame, 10);
     
     function frame() {
-        document.getElementById("t value").innerHTML = t
-
     if(menuState == false){
         if(Line_Container.childElementCount != 0){
             Line_Container.removeChild(Line_Container.lastChild)
@@ -686,10 +662,9 @@ function nav_Outline_anim(){
                     )
                     
                 }
-                setTimeout(() => {
-                    Fill_Container.replaceChildren()
-                    
-                }, 500);
+
+                //clear the fill container of its children
+                setTimeout(() => {Fill_Container.replaceChildren()}, 500);
                 
                 menu_shown = false
             }
