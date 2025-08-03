@@ -324,7 +324,7 @@ footer{
 
 /* Game! s*/
 .game{
-    width:50%;
+    width:75%;
     aspect-ratio: 1/1;
     border-top: 5px solid white;
     border-right: 5px solid white;
@@ -380,6 +380,8 @@ footer{
     
     .verticle_container img{
         margin:0px !important;
+        width: 100%;
+        height: auto;
     }
 
     .Arrow_Container img:last-child{

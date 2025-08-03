@@ -8,9 +8,11 @@
 
         <body>
             <nav id ="nav">
+                <!-- Store line elements when web app starts  -->
                 <div id = "Fill_Container"></div>
                 <div id = "Line_Container"></div>
                 <button  id = "Hamburger"><img src="Images/Hamburger Icon.png" draggable="false"></button>
+                <!-- Store navigation buttons -->
                 <div id = "Item_container">
                     <div class = "nav_item">
                         <div>An Introduction to Bezier Curves</div>
@@ -30,10 +32,12 @@
                  <header><h1>An Introduction to Bezier Curves </h1></header>
              </div>
              <main>
+                <!-- More accesible navigation-->
                 <div class="Arrow_Container"> 
                     <img src="Images/Transparent.png" alt="left" draggable="false">
                     <img src="Images/Transparent.png" alt="right" draggable="false">
                 </div>
+                <!-- Page 1 Intro -->
                 <section class="Section">
                     <article>
                         <h3>The Story of the Curve</h3>
@@ -59,13 +63,10 @@
                             <img src="Images/Weird_Curve.png">
                             <p>But, how do we craft a unique kind of curve. One that loops or curves in the weirdest ways possible? Like this image?</p>
                         </div>
-                        
                             <p>Well, that's what we're here to find out today.</p>
                     </article>
-                    <div id ="t value">
-                    t
-                    </div>
                 </section>
+                <!-- Page 2 Interpolation -->
                 <section class="Section">
                     <article>
                         <h3>So, how do we calculate bezier curves?</h3>
@@ -107,6 +108,7 @@
 
                     </article>
                 </section>   
+                <!-- Page 3 Calculations -->
                 <section class="Section">
                     <article>
                         <h3>Linear Bezier Curves</h3>
@@ -129,7 +131,15 @@
                         <h3>Quadratic Bezier Curves</h3>
                         <div class = "left">
                             <p>
-                                Here, we begin to actually get into making a curve. Ta da!. So, how is this curve even made?
+                                Here, we begin to actually get into making a curve. Ta da!. So, how is this curve even made? Essentially, this curve is the result of many interpolations.
+                                 This gif over here will demonstrate. 
+                            </p>
+                            <img src="Images/Bézier_Gen.gif" alt="">
+                        </div>
+                        <div class = "right">
+                            <p>
+                                So, what do I mean by many interpolations? What we do here is bassicaly first interpolating between our defined points or our control points, 
+                                then interpolating the interpolation of those two points. This may seem complicated on paper but, when you look at it through the gif above, it makes more sense.
                             </p>
                         </div>
                         <div class="game">
@@ -140,6 +150,11 @@
                     </article>
                     <article>
                         <h3>Cubic Bezier Curves</h3>
+                        <div class = "left">
+                            <p>As you may have noticed, the more points we add on a bezier curve, the more complex shapes we can make. Strictly speaking, it'd be much more efficient if
+                                
+                            </p>
+                        </div>
                         <div class="game">
                             <img src="Images/Marker.png" alt="Marker" draggable="false">
                             <img src="Images/Marker.png" alt="Marker" draggable="false">

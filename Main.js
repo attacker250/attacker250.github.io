@@ -165,11 +165,11 @@ function createLine(x1, y1, x2, y2) {
         b = y1 - y2,
         c = Math.sqrt(a * a + b * b); 
 
-
-        //What?
+    //(0,0) (5,5) 
+    //find midpoint
     var sx = (x1 + x2) / 2,
         sy = (y1 + y2) / 2;
-
+    
     var x = sx - c / 2,
         y = sy;
 
@@ -355,7 +355,7 @@ function innitGame(){
 
     //generate Line
     
-    
+
 
         
     for(var i = 0; i < gameElement.length; i++){
@@ -373,6 +373,21 @@ function innitGame(){
             }
         }
 
+        lineWidth = width/12+"px";
+        lineColour = "green";
+        LshadowColour = "transparent"
+        z_index = -2
+        for(var d = 0;d < Object.keys(coords).length -1;d++){
+            document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(coords["Set"+(d+1)].x,coords["Set"+(d+1)].y,coords["Set"+(d+2)].x,coords["Set"+(d+2)].y))
+        }
+        lineWidth = width/6+"px";
+        lineColour = "red";
+        LshadowColour = "transparent"
+        z_index = -1
+
+
+
+        
         let t_ = 0;
         while(t_ < 1){
             t_ += 0.05;
@@ -414,10 +429,7 @@ function drag(event){
         let coords = {}
         var gamecontainer = target.parentElement.children
 
-        lineWidth = width/12+"px";
-        lineColour = "green";
-        LshadowColour = "transparent"
-        z_index = -2
+
 
         for(var i = 0;i < gamecontainer.length; i++){
             if(gamecontainer[i].alt == "Marker"){
@@ -427,14 +439,13 @@ function drag(event){
             }
         }
         
-        console.log(coords)
+        lineWidth = width/12+"px";
+        lineColour = "green";
+        LshadowColour = "transparent"
+        z_index = -2
         target.parentElement.lastChild.replaceChildren()
-        for(var i = 0;i < gamecontainer.length;i++){
-            if(gamecontainer[i].alt == "Marker"){
-                // target.parentElement.lastChild.appendChild(createLine(Object.keys(coords)[i-1].x,Object.keys(coords)[i-1].y,Object.keys(coords)[i].x,Object.keys(coords)[i].y))
-                console.log(i,"   ",coords[Object.keys(coords)[i-1]])
-                console.log("set",coords[Object.keys(coords)[1]])
-            }
+        for(var i = 0;i < Object.keys(coords).length -1;i++){
+            target.parentElement.lastChild.appendChild(createLine(coords["Set"+(i+1)].x,coords["Set"+(i+1)].y,coords["Set"+(i+2)].x,coords["Set"+(i+2)].y))
         }
         lineWidth = width/6+"px";
         lineColour = "red";
