@@ -130,6 +130,9 @@ main{
 .Section{
     transition: 2s;
 }
+.Section h2{
+    text-align: center;
+}
 
 /* Main Content Styling */
 
@@ -410,5 +413,8 @@ footer{
 
     .game{
         user-select: none 
+    }
+    #qr{
+        display: none;
     }
 }
