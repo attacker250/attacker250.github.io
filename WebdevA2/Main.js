@@ -390,7 +390,7 @@ function drag(event){
     if(mousedown == true && target != null && target.alt == "Marker"){
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
         var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
-        
+        console.log(event)
         if(window.innerWidth <= 800){ //if page width is less than 800px
             if(event.type == "click"){
                 target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
@@ -403,8 +403,14 @@ function drag(event){
 
         }
         else{
-            target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
-            target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";
+            if(event.type == "click"){
+                target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
+                target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";
+            }
+            else{
+                target.style.left = event.touches[0].clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
+                target.style.top = event.touches[0].clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";  
+            }
         }
 
         let coords = {};
