@@ -91,7 +91,7 @@ function set_coords(){
         
     }    
 }
-//Nav items initialisation
+//Nav items init    ialisation
 function NavItemsUpdate(){
 
     if(window.innerWidth <= 800){ //if page width is less than 800px
@@ -139,6 +139,7 @@ for(let i = 0; i < gameElement.length;i++){
 
 innitGame();
 function innitGame(){
+
     //Make a div for storing lines
     //Needed Variables
     let coords = {};
@@ -203,6 +204,7 @@ function innitGame(){
     lineColour = "#ff8d00";
     LshadowColour = "#ff8d00";
     lineWidth = "1.9px";
+    t_marker();
 }
 
 
@@ -336,6 +338,7 @@ for(let i = 0; i < nav_items.length;i++){
 document.getElementsByClassName("Arrow_Container")[0].addEventListener("click", arrowContentManager);
 document.getElementsByClassName("Arrow_Container")[1].addEventListener("click", arrowContentManager);
 document.getElementById("Calc-Enter").addEventListener("click", calculator);
+document.getElementById("moveEnemy").addEventListener("click", t_marker);
 
 for(let i = 0; i < document.getElementsByClassName("game").length;i++){
     document.getElementsByClassName("game")[i].addEventListener("mouseleave", mouseleaves);
@@ -367,10 +370,12 @@ function markerClick(event){
     mousedown = !mousedown;
     if(event.target.tagName == "BUTTON"){
         mousedown = false;
-        for(let i = 0;i < document.getElementsByClassName("gameLineContainer").length; i++){
-           document.getElementsByClassName("gameLineContainer")[i].replaceChildren();
+        if(event.target.id != "moveEnemy"){
+            for(let i = 0;i < document.getElementsByClassName("gameLineContainer").length; i++){
+               document.getElementsByClassName("gameLineContainer")[i].replaceChildren();
+            }
+            innitGame();
         }
-        innitGame();
     }
     else{
         target = event.target;
@@ -379,6 +384,7 @@ function markerClick(event){
 }
 
 function drag(event){
+        
 
     if(mousedown == true && target != null && target.alt == "Marker"){
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
@@ -397,15 +403,16 @@ function drag(event){
         let coords = {};
         var gamecontainer = target.parentElement.children;
 
-
-
+        let counter = 1;
         for(let i = 0;i < gamecontainer.length; i++){
             if(gamecontainer[i].alt == "Marker"){
-                coords["Set"+i] = {};
-                coords["Set"+i].x = parseInt(gamecontainer[i].style.left) + width/2;
-                coords["Set"+i].y = parseInt(gamecontainer[i].style.top) + height/2;
+                coords["Set"+counter] = {};
+                coords["Set"+counter].x = parseInt(gamecontainer[i].style.left) + width/2;
+                coords["Set"+counter].y = parseInt(gamecontainer[i].style.top) + height/2;
+                counter++;
             }
         }
+        
         
         lineWidth = width/12+"px";
         lineColour = "green";
@@ -428,12 +435,63 @@ function drag(event){
                 let Set2 = Generate_Bezier(t_,coords);
                 target.parentElement.lastChild.appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y));
             }
+            t_marker();
     }
     z_index = 0;
     lineColour = "#ff8d00";
     LshadowColour = "#ff8d00";
     lineWidth = "1.9px";
 }
+
+function t_marker(){
+    var pathfinding = document.getElementById("Pathfinding");
+    var PathChildren = pathfinding.children;
+    let counter = 1;
+    var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
+    var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
+    let coords = {};
+
+    for(let i = 0;i < PathChildren.length; i++){
+        if(PathChildren[i].alt == "Marker"){
+            coords["Set"+counter] = {};
+            coords["Set"+counter].x = parseInt(PathChildren[i].style.left) + width/4;
+            coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + height/4;
+            counter++;
+        }
+        if(PathChildren[i].className == "circle"){
+            PathChildren[i].remove();
+        }
+    }
+    var circle = document.createElement("div");
+    
+    circle.className = "circle";
+    pathfinding.insertBefore(circle,pathfinding.lastChild);
+    
+    circle = document.getElementsByClassName("circle")[0];
+    circle.style.position = "relative";
+    circle.style.left = coords.Set1.x+"px";
+    circle.style.top = coords.Set1.y+"px";
+    
+    clearInterval(id);
+    id = setInterval(frame, 10);
+    let t_ = 0;
+    function frame(){
+        if(t_ >=1){
+            clearInterval(id);
+        }
+        else{
+            let Set2 = Generate_Bezier(t_,coords);
+            circle.style.left = Set2.x+"px";
+            circle.style.top = Set2.y+"px";
+            t_ += 0.009;
+        }
+        
+    }
+
+}
+
+
+
 
 //calculator for page 2
 function calculator(){

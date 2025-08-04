@@ -334,9 +334,7 @@ footer{
 .game{
     width:75%;
     aspect-ratio: 1/1;
-    border-top: 5px solid white;
-    border-right: 5px solid white;
-    border-left: 5px solid white;
+    border: 5px solid white;
     position: relative;
     overflow: hidden;
     touch-action: none;
@@ -357,6 +355,16 @@ footer{
     z-index:1;
     position: relative;
 }
+.circle{
+    height:5%;
+    width:5%;
+    border-radius:50%;
+    background-color: blue;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+
 /* Audio Gag */
 #drums{
     color:cyan;
