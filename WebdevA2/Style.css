@@ -264,7 +264,7 @@ footer{
 #test{
     background-color: red;
     width:100%;
-    height:7000px;
+    /* height:7000px; */
 }
 /* Page 2 Calculator */
 #calculator{
