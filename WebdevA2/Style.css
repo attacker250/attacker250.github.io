@@ -362,6 +362,7 @@ footer{
     background-color: blue;
     user-select: none;
     -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 
