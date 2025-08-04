@@ -386,14 +386,19 @@ function markerClick(event){
 }
 
 function drag(event){
-    
     if(mousedown == true && target != null && target.alt == "Marker"){
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
         var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
         
         if(window.innerWidth <= 800){ //if page width is less than 800px
-            target.style.left = event.touches[0].clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
-            target.style.top = event.touches[0].clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";  
+            if(event.type == "click"){
+                target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
+                target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";
+            }
+            else{
+                target.style.left = event.touches[0].clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
+                target.style.top = event.touches[0].clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";  
+            }
 
         }
         else{
@@ -461,12 +466,14 @@ function addMarker(event){
 function removeMarker(event){
     var pathfinding = document.getElementById("Pathfinding");
     var circle = document.getElementsByClassName("circle")[0];
-    pathfinding.removeChild(circle.previousElementSibling);
-
-    target = circle.previousElementSibling;
-    mousedown = true;
-    drag(event);
-    mousedown = false;
+    if(circle.previousElementSibling.alt == "Marker"){
+        pathfinding.removeChild(circle.previousElementSibling);
+    
+        target = circle.previousElementSibling;
+        mousedown = true;
+        drag(event);
+        mousedown = false;
+    }
 }
 
 function t_marker(){
@@ -485,8 +492,8 @@ function t_marker(){
                 coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + (height/2)/2;
             }
             else if(window.innerWidth <= 800){
-                coords["Set"+counter].x = parseInt(PathChildren[i].style.left) - width/5;
-                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) - height/5;
+                coords["Set"+counter].x = parseInt(PathChildren[i].style.left );
+                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) - (height);
             }
             counter++;
         }
