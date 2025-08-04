@@ -1,6 +1,6 @@
 {
- "short_name": "Eldrick's ICA2",
-    "name": "hi ICA2 App",
+ "short_name": "Bezier Curves",
+    "name": "Bezier Curves",
     "icons": [
         {
             "src": "Images/Favicon.png",
@@ -13,7 +13,7 @@
           "sizes": "512x512"
         }
     ],
-    "start_url": "/The Wonder of Bezier Curves/",
-    "id" : "/The Wonder of Bezier Curves/",
+    "start_url": "/WebdevA2/",
+    "id" : "/WebdevA2/",
     "display":"fullscreen"
 }

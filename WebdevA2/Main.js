@@ -454,8 +454,14 @@ function t_marker(){
     for(let i = 0;i < PathChildren.length; i++){
         if(PathChildren[i].alt == "Marker"){
             coords["Set"+counter] = {};
-            coords["Set"+counter].x = parseInt(PathChildren[i].style.left) + width/4;
-            coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + height/4;
+            if(window.innerWidth >= 800){ //if page width is more than 800px
+                coords["Set"+counter].x = parseInt(PathChildren[i].style.left) + (width/2)/2;
+                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + (height/2)/2;
+            }
+            else if(window.innerWidth <= 800){
+                coords["Set"+counter].x = parseInt(PathChildren[i].style.left) - width/5;
+                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) - height/5;
+            }
             counter++;
         }
         if(PathChildren[i].className == "circle"){
@@ -631,8 +637,8 @@ function Nav_fill(){
         var Set2 = Generate_Bezier(t_ - minus,coords);
 
         
-        if(t_ ==0.01){
-            if(window.innerWidth >= 800){ //if page width is less than 800px
+        if(t_ == 0.01){
+            if(window.innerWidth >= 800){ //if page width is more than 800px
                 Fill_Container.appendChild(createRect(Set2.x, Set2.y,Set2.x,Set2.y+100,width));        
             }
         }
