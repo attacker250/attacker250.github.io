@@ -91,7 +91,7 @@ function set_coords(){
         
     }    
 }
-//Nav items init    ialisation
+//Nav items initialisation
 function NavItemsUpdate(){
 
     if(window.innerWidth <= 800){ //if page width is less than 800px
@@ -139,7 +139,6 @@ for(let i = 0; i < gameElement.length;i++){
 
 innitGame();
 function innitGame(){
-
     //Make a div for storing lines
     //Needed Variables
     let coords = {};
@@ -154,11 +153,11 @@ function innitGame(){
         for(let d = 0; d < gameElement[i].getElementsByTagName("img").length;d++){
             if(d%2 == 0 ){
                 gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2+"px";
-                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px";
+                gameElement[i].getElementsByTagName("img")[d].style.left = (width/2)*d+"px";
             }
             else{
-                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/2.5+"px";
-                gameElement[i].getElementsByTagName("img")[d].style.left = (width/0.5)*d+"px";
+                gameElement[i].getElementsByTagName("img")[d].style.top = Gameheight/3+"px";
+                gameElement[i].getElementsByTagName("img")[d].style.left = (width/2)*d+"px";
     
             }
         }
@@ -179,7 +178,7 @@ function innitGame(){
                 coords["Set"+d].y = parseInt(GameElementChildren[d].style.top) + height/2;
             }
         }
-
+        
         lineWidth = width/12+"px";
         lineColour = "green";
         LshadowColour = "transparent";
@@ -200,6 +199,7 @@ function innitGame(){
             document.getElementsByClassName("gameLineContainer")[i].appendChild(createLine(Set1.x,Set1.y,Set2.x,Set2.y));
         }
     }
+    //reset the line generation attributes to original state
     z_index = 0;
     lineColour = "#ff8d00";
     LshadowColour = "#ff8d00";
@@ -339,6 +339,8 @@ document.getElementsByClassName("Arrow_Container")[0].addEventListener("click", 
 document.getElementsByClassName("Arrow_Container")[1].addEventListener("click", arrowContentManager);
 document.getElementById("Calc-Enter").addEventListener("click", calculator);
 document.getElementById("moveEnemy").addEventListener("click", t_marker);
+document.getElementById("addMarker").addEventListener("click", addMarker);
+document.getElementById("removeMarker").addEventListener("click", removeMarker);
 
 for(let i = 0; i < document.getElementsByClassName("game").length;i++){
     document.getElementsByClassName("game")[i].addEventListener("mouseleave", mouseleaves);
@@ -370,7 +372,7 @@ function markerClick(event){
     mousedown = !mousedown;
     if(event.target.tagName == "BUTTON"){
         mousedown = false;
-        if(event.target.id != "moveEnemy"){
+        if(event.target.className == "reset"){
             for(let i = 0;i < document.getElementsByClassName("gameLineContainer").length; i++){
                document.getElementsByClassName("gameLineContainer")[i].replaceChildren();
             }
@@ -384,8 +386,7 @@ function markerClick(event){
 }
 
 function drag(event){
-        
-
+    
     if(mousedown == true && target != null && target.alt == "Marker"){
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
         var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
@@ -441,6 +442,31 @@ function drag(event){
     lineColour = "#ff8d00";
     LshadowColour = "#ff8d00";
     lineWidth = "1.9px";
+}
+
+function addMarker(event){
+    var pathfinding = document.getElementById("Pathfinding");
+    var circle = document.getElementsByClassName("circle")[0];
+    var marker = document.createElement("img");
+    marker.src = "Images/Marker.png";
+    marker.alt = "Marker";
+    marker.draggable = false;
+    pathfinding.insertBefore(marker,circle);
+    target = circle.previousElementSibling;
+    mousedown = true;
+    drag(event);
+    mousedown = false;
+}
+
+function removeMarker(event){
+    var pathfinding = document.getElementById("Pathfinding");
+    var circle = document.getElementsByClassName("circle")[0];
+    pathfinding.removeChild(circle.previousElementSibling);
+
+    target = circle.previousElementSibling;
+    mousedown = true;
+    drag(event);
+    mousedown = false;
 }
 
 function t_marker(){
