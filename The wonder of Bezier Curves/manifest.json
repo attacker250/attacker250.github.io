@@ -1,0 +1,19 @@
+{
+ "short_name": "Eldrick's ICA2",
+    "name": "hi ICA2 App",
+    "icons": [
+        {
+            "src": "Images/Favicon.png",
+            "type": "image/png",
+            "sizes": "192x192"
+        },
+        {
+          "src": "Images/Favicon.png",
+          "type": "image/png",
+          "sizes": "512x512"
+        }
+    ],
+    "start_url": "/The Wonder of Bezier Curves/",
+    "id" : "/The Wonder of Bezier Curves/",
+    "display":"fullscreen"
+}
