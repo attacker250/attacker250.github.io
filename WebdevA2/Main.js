@@ -403,14 +403,8 @@ function drag(event){
 
         }
         else{
-            if(event.type == "click"){
-                target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
-                target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";
-            }
-            else{
-                target.style.left = event.touches[0].clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
-                target.style.top = event.touches[0].clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";  
-            }
+            target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
+            target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";
         }
 
         let coords = {};
