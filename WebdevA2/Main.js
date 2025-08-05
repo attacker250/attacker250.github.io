@@ -332,9 +332,6 @@ for(let i = 0; i < document.getElementsByClassName("game").length;i++){
     document.getElementsByClassName("game")[i].addEventListener("touchmove", drag);
 
 }
-//test
-
-
 
 //Bezier Curve Game
 //Fail safe for when mouse leaves the game area but let go outside
