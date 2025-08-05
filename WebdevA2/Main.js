@@ -488,13 +488,14 @@ function t_marker(){
     for(let i = 0;i < PathChildren.length; i++){
         if(PathChildren[i].alt == "Marker"){
             coords["Set"+counter] = {};
+            console.log(PathChildren[i])
             if(window.innerWidth >= 800){ //if page width is more than 800px
                 coords["Set"+counter].x = parseInt(PathChildren[i].style.left) + (width/2)/2;
                 coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + (height/2)/2;
             }
             else if(window.innerWidth <= 800){
-                coords["Set"+counter].x = parseInt(PathChildren[i].style.left );
-                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) - (height);
+                coords["Set"+counter].x = parseInt(PathChildren[i].style.left)  + width/2 ;
+                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) - height * 1.5;
             }
             counter++;
         }
