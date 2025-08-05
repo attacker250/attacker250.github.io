@@ -22,7 +22,6 @@ var t = 0 ;
 //menu variables
 var menuState = false;
 var menu_shown = false;
-var menu_offset;
 //Game variables
 var gameElement = document.getElementsByClassName("game");
 var mousedown = false;
@@ -716,8 +715,8 @@ function nav_Outline_anim(){
                 //hide the navigation fill
                 for(let i = 0; i < Fill_Container.childElementCount; i++){
                     //remove current animation to clear it
-                    Fill_Container.children[i].classList.remove("show_fill")               
-                    Fill_Container.children[i].classList.add("hide_fill")               
+                    Fill_Container.children[i].classList.remove("show_fill");           
+                    Fill_Container.children[i].classList.add("hide_fill");           
                 }
 
                 //clear the fill container of its children after the animation is finished
