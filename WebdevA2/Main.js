@@ -493,6 +493,7 @@ function t_marker(){
             PathChildren[i].remove();
         }
     }
+    //create circle element
     var circle = document.createElement("div");
     
     circle.className = "circle";
