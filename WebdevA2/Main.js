@@ -1,11 +1,5 @@
 
 
-
-//Todo:
-//Design Page layout
-//Animate the nav menu items when clicked(Optional)
-//Design what to put inside the page itself
-
 //Global Variables
 var lineWidth = "1.9px";
 var lineColour = "#ff8d00";
@@ -17,7 +11,6 @@ var rectColour = "transparent";
 var coords = {
 };
 var id = null;
-var menuState = false;
 
 var Line_Container = document.getElementById("Line_Container");
 var nav_items = document.getElementsByClassName("nav_item");
@@ -27,6 +20,7 @@ var sections = document.getElementsByClassName("Section");
 
 var t = 0 ;
 //menu variables
+var menuState = false;
 var menu_shown = false;
 var menu_offset;
 //Game variables
@@ -91,35 +85,17 @@ function set_coords(){
         
     }    
 }
+
 //Nav items initialisation
 function NavItemsUpdate(){
-
-    if(window.innerWidth <= 800){ //if page width is less than 800px
-        menu_offset = -window.innerWidth + 12.5;
-    }
-    else{
-        menu_offset = -0.17 * window.innerWidth;
-    }   
+    //ensures that all nav items are hidden and initialises its delay property  
     if(menu_shown == false){
         for(let i = 0; i < nav_items.length; i++){        
-            nav_items[i].style.position = "relative";
-            nav_items[i].style.left = "110%";
-            }
+                nav_items[i].style.animationDelay = (i-1)*100 + "ms";
+                nav_items[i].style.position = "relative";
+                nav_items[i].style.left = "115%";
         }
-
-    else{
-        for(let i = 0; i < nav_items.length; i++){        
-            nav_items[i].animate(
-                [{transform:"translateX("+ (menu_offset-20) +"px)"},  ],
-                {
-                    duration:0,
-                    fill:"forwards",
-                    
-                }
-            );
-        }   
     }
-    
 }
 
 
@@ -384,14 +360,16 @@ function markerClick(event){
         
     }
 }
-// var test = document.getElementById("test")
 function drag(event){
-    // test.innerHTML = event
+    //check if the mouse is held down, the mouse is holding something and that it is a marker
     if(mousedown == true && target != null && target.alt == "Marker"){
+        //get the width and height of the marker
         var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
         var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
-        console.log(event)
+        
+        //set the markers position to the middle of the mouse / finger touch 
         if(window.innerWidth <= 800){ //if page width is less than 800px
+            //on mobile clicking the button will activate a click event instead of a touch event
             if(event.type == "click"){
                 target.style.left = event.clientX - target.parentElement.getBoundingClientRect().x - width/2+ "px";
                 target.style.top = event.clientY - target.parentElement.getBoundingClientRect().y - height/2 + "px";
@@ -409,8 +387,9 @@ function drag(event){
 
         let coords = {};
         var gamecontainer = target.parentElement.children;
-
+        //counter is to name the set variables accurately
         let counter = 1;
+        //set the coords
         for(let i = 0;i < gamecontainer.length; i++){
             if(gamecontainer[i].alt == "Marker"){
                 coords["Set"+counter] = {};
@@ -420,21 +399,24 @@ function drag(event){
             }
         }
         
-        
+        //set the line render data
         lineWidth = width/12+"px";
         lineColour = "green";
         LshadowColour = "transparent";
         z_index = -2;
+        //clear all the currently rendered lines
         target.parentElement.lastChild.replaceChildren();
+        //render the line that connects the markers
         for(let i = 0;i < Object.keys(coords).length -1;i++){
             target.parentElement.lastChild.appendChild(createLine(coords["Set"+(i+1)].x,coords["Set"+(i+1)].y,coords["Set"+(i+2)].x,coords["Set"+(i+2)].y));
         }
+        //set the line rendering data to suit the curve
         lineWidth = width/6+"px";
         lineColour = "red";
         LshadowColour = "transparent";
         z_index = -1;
 
-
+        //render the curves
             let t_ = 0;
             while(t_ < 1){
                 t_ += 0.05;
@@ -444,12 +426,13 @@ function drag(event){
             }
             t_marker();
     }
+    //reset the data to default values
     z_index = 0;
     lineColour = "#ff8d00";
     LshadowColour = "#ff8d00";
     lineWidth = "1.9px";
 }
-
+//adds a marker as the last child
 function addMarker(event){
     var pathfinding = document.getElementById("Pathfinding");
     var circle = document.getElementsByClassName("circle")[0];
@@ -464,6 +447,7 @@ function addMarker(event){
     mousedown = false;
 }
 
+//deletes the last added marker
 function removeMarker(event){
     var pathfinding = document.getElementById("Pathfinding");
     var circle = document.getElementsByClassName("circle")[0];
@@ -477,23 +461,29 @@ function removeMarker(event){
     }
 }
 
+//control the movement of the blue dot on page 4 in the pathfinding section
 function t_marker(){
+
     var pathfinding = document.getElementById("Pathfinding");
     var PathChildren = pathfinding.children;
     let counter = 1;
+    //get the width of the marker image
     var width = target.getBoundingClientRect().right - target.getBoundingClientRect().left;
     var height = target.getBoundingClientRect().bottom - target.getBoundingClientRect().top;
     let coords = {};
 
+    //set the coordinates of the bezier curve based off of the marker left and top positions
     for(let i = 0;i < PathChildren.length; i++){
         if(PathChildren[i].alt == "Marker"){
             coords["Set"+counter] = {};
-            console.log(PathChildren[i])
             if(window.innerWidth >= 800){ //if page width is more than 800px
-                coords["Set"+counter].x = parseInt(PathChildren[i].style.left) + (width/2)/2;
-                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + (height/2)/2;
+                //dividing by 4 beccause the line starts in the middle of the circle (which is the width/height divided by 2) 
+                // so we divide by 4 to get in the middle of the line
+                coords["Set"+counter].x = parseInt(PathChildren[i].style.left) + width/4;
+                coords["Set"+counter].y = parseInt(PathChildren[i].style.top) + height/4;
             }
             else if(window.innerWidth <= 800){
+                //idk why i have to use a different set of calculations but it works 
                 coords["Set"+counter].x = parseInt(PathChildren[i].style.left)  + width/2 ;
                 coords["Set"+counter].y = parseInt(PathChildren[i].style.top) - height * 1.5;
             }
@@ -512,15 +502,17 @@ function t_marker(){
     circle.style.position = "relative";
     circle.style.left = coords.Set1.x+"px";
     circle.style.top = coords.Set1.y+"px";
-    
+    //moves the circle aka the enemy
     clearInterval(id);
     id = setInterval(frame, 10);
     let t_ = 0;
     function frame(){
+        //stops the animation when the t value is 100%
         if(t_ >=1){
             clearInterval(id);
         }
         else{
+            //moves the circle in accordance to the bezier
             let Set2 = Generate_Bezier(t_,coords);
             circle.style.left = Set2.x+"px";
             circle.style.top = Set2.y+"px";
@@ -541,11 +533,12 @@ function calculator(){
     var x2 = document.getElementsByTagName("input")[2].value;
     var y2 = document.getElementsByTagName("input")[3].value;
     var t = document.getElementsByTagName("input")[4].value;
-    var result = document.getElementById("Calc-Results");
+    var result = document.querySelector("#Calc-Results");
     var coords = {
         Set1:{x:x1,y:y1},
         Set2:{x:x2,y:y2}
     };
+    //checks if the input value is empty and responds accordingly
     for(let i = 0; i < 5; i++){
         if(document.getElementsByTagName("input")[i].value == ""){
             result.innerHTML = "Please enter all data correctly";
@@ -556,11 +549,12 @@ function calculator(){
     }
 }
 
-//Page Content Managers
+//Page Content Managers based on the arrows clicked
 function arrowContentManager(event){
     if(event.target.alt == "right"){
         for(let i = 0;i < sections.length;i++){
             if(sections[i].style.overflow != "hidden"){
+                //This is to check if the user is trying to go to the first page from the last page
                 if(sections[3].style.overflow != "hidden"){
                     sections[i].style.height = "0";
                     sections[i].style.overflow = "hidden";
@@ -580,8 +574,8 @@ function arrowContentManager(event){
             }
         }
         document.documentElement.scrollTo(0,0);
-
     }
+    //Check which sprite was called since this is event delegation 
     else if(event.target.alt == "left"){
         for(let i = 0;i < sections.length;i++){
             if(sections[i].style.overflow != "hidden"){
@@ -603,11 +597,13 @@ function arrowContentManager(event){
                 break;
             }
         }
+        //its not outside of the if else statement so that the document only scrolls to the top when the arrow is clicked and not the arrows parent
         document.documentElement.scrollTo(0,0);
     }
 
 }
 
+//handles what page will be shown
 function navContentManager(event){
     for(let i = 0; i < nav_items.length;i++){
         if(nav_items[i] == event.target.parentElement){
@@ -651,32 +647,36 @@ function refresh(){
         var Set1 = Generate_Bezier(t_ ,coords);
         var Set2 = Generate_Bezier(t_ - minus,coords);
 
-
         Line_Container.appendChild(createLine(Set1.x, Set1.y,Set2.x, Set2.y));
     }
-    
 }
 
 //fill in the shape that appears when the menu is summoned
 function Nav_fill(){
+    //seperate variables
     let t_ = 0;
     let width = 1000;
     set_coords();
-
+    //the visuals happen instantly because its a while loop
+    //first clear all current fill
     Fill_Container.replaceChildren();
+
     while(t_ < 1){
+        //generate the bezier curve
         t_ += 0.01; 
         var minus = 0.012;  
-
+        //generate the bezier curve
         var Set1 = Generate_Bezier(t_ ,coords);
         var Set2 = Generate_Bezier(t_ - minus,coords);
 
-        
+        //this bit is really manual and I don't like it but I couldnt find a better solution in time
+        //This detects if the line has begun and creates a rectangle to hide a hole that the original fill couldnt patch
         if(t_ == 0.01){
             if(window.innerWidth >= 800){ //if page width is more than 800px
                 Fill_Container.appendChild(createRect(Set2.x, Set2.y,Set2.x,Set2.y+100,width));        
             }
         }
+        //the same thing happens but at the last created element
         if(t_ >= 1){
             if(window.innerWidth <= 800){ //if page width is less than 800px
                 Fill_Container.appendChild(createRect(Set2.x,Set2.y,Set2.x,Set2.y+600  ,width));
@@ -690,58 +690,39 @@ function Nav_fill(){
     }
 }
 
-//fix the top right shape being shown when zoomed in all the way (Optional)
-//figure out colour scheme for nav bar
-
 
 function nav_Outline_anim(){
+    //refresh the bezier curve coordinates
     set_coords();
     refresh();
     menuState = !menuState;
+    //stop current animation then restart it
     clearInterval(id);
     id = setInterval(frame, 10);
     
     function frame() {
     if(menuState == false){
         if(Line_Container.childElementCount != 0){
+            //first progressively hide the outline by deleting the last child
             Line_Container.removeChild(Line_Container.lastChild);
             t = t - 0.01; 
         }
         else{
             //Animate Nav items hidings
             if(menu_shown == true){
+                //hide the navigation items
                 for(let i = 0; i < nav_items.length; i++){
-                    nav_items[i].animate(
-                        [
-                            {transform:"translateX("+ (menu_offset-20) +"px)"},  
-                            {transform:"translateX("+ (menu_offset-30) +"px)"},  
-                            {transform:"translateX(0%)"},
-    
-                        ],
-                        {
-                            duration:500,
-                            fill:"forwards",
-                            delay:(i-1)*100,
-                            ease:"cubic-bezier(0.68, -0.6, 0.32, 1.6);"
-                            
-                        }
-                    );
+                    nav_items[i].classList.remove('nav_show');
+                    nav_items[i].classList.add('nav_hide');
                 }
-
+                //hide the navigation fill
                 for(let i = 0; i < Fill_Container.childElementCount; i++){
-                    Fill_Container.children[i].animate(
-                        [
-                            {borderTopColor:"transparent"}
-                        ],
-                        {
-                            duration:500,
-                            fill:"forwards",
-                        }
-                    );
-                    
+                    //remove current animation to clear it
+                    Fill_Container.children[i].classList.remove("show_fill")               
+                    Fill_Container.children[i].classList.add("hide_fill")               
                 }
 
-                //clear the fill container of its children
+                //clear the fill container of its children after the animation is finished
                 setTimeout(function(){Fill_Container.replaceChildren();}, 500);
                 
                 menu_shown = false;
@@ -757,45 +738,30 @@ function nav_Outline_anim(){
             //Animate Nav items showing
             if(menu_shown == false){
                 for(let i = 0; i < nav_items.length; i++){
-                    nav_items[i].animate(
-                        [
-                            {transform:"translateX(0%)"},
-                            {transform:"translateX("+ (menu_offset-30) +"px)"},  
-                            {transform:"translateX("+ (menu_offset-20) +"px)"},  
-    
-                        ],
-                        {
-                            duration:500,
-                            fill:"forwards",
-                            delay:(i-1)*100,
-                            ease:"cubic-bezier(0.68, -0.6, 0.32, 1.6);"
-                            
-                        }
-                    );
+                    nav_items[i].classList.remove('nav_hide');
+                    nav_items[i].classList.add('nav_show');
+
                 }  
+
+                //makes a invisible fill so that the fill is invisible when it is created
                 rectColour = "transparent";
                 Nav_fill();
+                //tells us that the menu is shown
                 menu_shown = true;
+                //toggling animation
                 for(let i = 0; i < Fill_Container.childElementCount; i++){
-                    Fill_Container.children[i].animate(
-                        [
-                            {borderTopColor:"#2b00cb"}
-                        ],
-                        {
-                            duration:500,
-                            fill:"forwards",
-                        }
-                    );
+                    Fill_Container.children[i].classList.add("show_fill");
                 }
-
             }
                 
-                
+            //update rect color so that when the window is resized it gets updated to the proper color
             rectColour = "#2b00cb";
+            //stop animation
             clearInterval(id);
         } 
 
     else {
+        //animate the outline being shown
         t += 0.01; 
 
         var minus = 0.02;  

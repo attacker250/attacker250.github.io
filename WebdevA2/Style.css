@@ -115,15 +115,64 @@ main{
 
 .nav_item:hover{
     position: relative;
-    left:95% !important; 
     background-color: orange;
     box-shadow:0 0 15px orange;
     transition:0.2s;
 }
 
 .nav_item:active{
-    left:100% !important; 
-    transition:0.1s;
+    left:-4.9vw !important; 
+}
+
+@keyframes show_items {
+    0%{left:115%}
+    50%{left:calc(-5vw - 30px)}
+    100%{left:calc(-5vw - 20px)}
+}
+.nav_show{
+    animation-name:show_items;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+
+}
+@keyframes hide_items {
+    0%{left:calc(-5vw - 20px)}
+    20%{left:calc(-5vw - 30px)}
+    100%{left:115%}
+}
+
+.nav_hide{
+    animation-name:hide_items;
+    animation-duration:1s;
+    animation-fill-mode:both;
+            
+}
+
+
+/* Fill animation */
+@keyframes hide_fill {
+    100%{border-top-color:transparent;}
+    0%{border-top-color:#2b00cb;}
+}
+
+.hide_fill{
+    animation-name:hide_fill;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+}
+
+
+@keyframes show_fill {
+    0%{border-top-color:transparent;}
+    100%{border-top-color:#2b00cb;}
+    
+}
+
+.show_fill{
+    animation-name:show_fill;
+    animation-duration:1s;
+    animation-fill-mode:forwards;
+
 }
 
 /* Section Transition */
@@ -215,8 +264,6 @@ article h3{
     width: 100%;
     height: auto;
 }
-
-
 
 article p{
     font-size: 125%;
@@ -379,6 +426,8 @@ footer{
 
 /* Styling for mobile phones */
 @media screen and (max-width:800px) {
+
+    /* General styling */
     #nav{
         width:20%;
     }
@@ -386,12 +435,29 @@ footer{
     #Item_container{
         height:20%;
     }
+
+    /* navigation var */
     .nav_item{
         width:100vw;
         height:20%;
         text-align: center;
         font-size: 100%;
     }
+    @keyframes show_items {
+        0%{left:115%}
+        100%{left:-80vw}
+    }
+    @keyframes hide_items {
+        0%{left:-80vw}
+        100%{left:115%}
+    }
+    .nav_item:active{
+        left:-80vw !important;
+        width:95vw;
+    }
+
+
+    /* content styling */
     h1{
         width: 100%;
         font-size:5vmax;

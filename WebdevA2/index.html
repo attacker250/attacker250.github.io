@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta charset="UTF-8">  
-        <link rel="icon" type="image/x-icon" href="Images/Favicon.png">
-        <link rel="stylesheet" type="text/css" href="Style.css">
-        <link rel="manifest" href="manifest.json">
+        <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1,user-scalable = no">
+            <meta charset="UTF-8">  
+            <link rel="icon" type="image/x-icon" href="Images/Favicon.png">
+            <link rel="stylesheet" type="text/css" href="Style.css">
+            <link rel="manifest" href="manifest.json">
+            <title>Bezier Curves</title>
+            <script src = "Main.js" defer></script>
+        </head>
         
-        <title>Bezier Curves</title>
-        <script src = "Main.js" defer></script>
         <body>
             <nav id ="nav">
                 <!-- Store line elements when web app starts  -->
@@ -86,6 +88,7 @@
                     <article>
                         <h3>What is Interpolation?</h3>
                         <div class="left">
+                            <!-- form inputs -->
                                 <div id="calculator">
                                     <div id = "Calc-Input">
                                         <input type="number" placeholder="x1"   >
@@ -221,7 +224,7 @@
                             <img src="Images/Marker.png" alt="Marker" draggable="false">
                             <div class="circle"></div>
                         </div>
-                        <!-- <div id = "test">gadf </div> -->
+                        <!-- This div somehow fixes a bug on mobile I seriously dont know why it happens but here we are-->
                          <div></div>
                         <div class = "middle">
                             <p>
@@ -243,10 +246,10 @@
                     </article>
                 </section>   
             </main>
-                <div class="Arrow_Container"> 
-                    <img src="Images/Transparent.png" alt="left" draggable="false">
-                    <img src="Images/Transparent.png" alt="right" draggable="false">
-                </div>
+            <div class="Arrow_Container"> 
+                <img src="Images/Transparent.png" alt="left" draggable="false">
+                <img src="Images/Transparent.png" alt="right" draggable="false">
+            </div>
             <footer>
                     <img id="qr" src="Images/QrCode.png" alt="QR_code">    
             </footer>
